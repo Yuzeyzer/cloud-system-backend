@@ -10,6 +10,7 @@ const registration_post = async (req, res) => {
     if (!errors.isEmpty) {
       return res.status(400).json({ message: 'Uncorrect Request', errors });
     }
+    console.log(req.body);
     let { name, email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -17,11 +18,11 @@ const registration_post = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: `User with that email ${email} already exist` });
     }
-    
+
     const salt = await bcrypt.genSalt();
     password = await bcrypt.hash(password, salt);
 
-    const newUser = new User({ name,email, password });
+    const newUser = new User({ name, email, password });
     newUser.save();
     return res.json({ message: 'User was created' });
   } catch (err) {
@@ -33,7 +34,7 @@ const registration_post = async (req, res) => {
 const login_post = async (req, res) => {
   try {
     const { email, password } = req.body;
-		
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -52,6 +53,7 @@ const login_post = async (req, res) => {
       token,
       user: {
         id: user.id,
+        name: user.name,
         email: user.email,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
@@ -60,7 +62,7 @@ const login_post = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.send({ message: 'Server Error' });
+    res.send({ message: 'Server Error', err });
   }
 };
 
