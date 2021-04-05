@@ -1,6 +1,5 @@
 {
 	"PORT": 8080,
 	"DB_URL": "mongodb+srv://Ayday:test1234@mern.leh3s.mongodb.net/mern?retryWrites=true&w=majority",
-	"secretKey": "pochemuNeOromo",
-	"filePath": "C:\\Users\\кибер\\Desktop\\Работа\\Авторские Курсы\\Full - Stack\\Backend\\Группы\\Пирожки\\MERN - lesson - 5\\server\files"
+	"secretKey": "pochemuNeOromo"
 }
