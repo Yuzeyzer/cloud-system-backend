@@ -29,7 +29,7 @@ class FileController {
   async getFile(req, res) {
     try {
       const files = await File.find({ user: req.user.id, parent: req.query.parent });
-      res.status(201).json({ files });
+      res.status(201).json(files);
     } catch (error) {
       res.status(500).json({ message: 'Ошибки создания файла или папки' });
     }
