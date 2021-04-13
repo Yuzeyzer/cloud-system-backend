@@ -20,6 +20,10 @@ const File = new Schema({
     type: String,
     default: '',
   },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
   user: {
     type: ObjectId,
     ref: 'User',
