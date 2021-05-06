@@ -87,7 +87,7 @@ const auth_get = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(e);
+    console.log(err);
     res.send({ message: 'Server error', e });
   }
 };

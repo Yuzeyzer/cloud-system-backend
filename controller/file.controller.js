@@ -30,7 +30,37 @@ class FileController {
 
   async getFile(req, res) {
     try {
-      const files = await File.find({ user: req.user.id, parent: req.query.parent });
+      const { sort } = req.query;
+      console.log(sort)
+      let files;
+      switch (sort) {
+        case 'name': {
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            name: 1,
+          });
+          break
+        }
+        case 'type': {
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            type: 1,
+          });
+          break
+        }
+        case 'date': {
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            date: 1,
+          });
+          break
+        }
+        case 'size': {
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            size: 1,
+          });
+          break
+        }
+        default:
+          files = await File.find({ user: req.user.id, parent: req.query.parent });
+      }
       res.status(201).json(files);
     } catch (error) {
       res.status(500).json({ message: 'Ошибки создания файла или папки' });
@@ -73,7 +103,7 @@ class FileController {
       let filePath = file.name;
 
       if (parent) {
-        filePath = `${parent.path}/${file.name}`
+        filePath = `${parent.path}/${file.name}`;
       }
 
       const dbFile = new File({
@@ -114,22 +144,21 @@ class FileController {
     }
   }
 
-  async deleteFile(req,res) {
+  async deleteFile(req, res) {
     try {
-      const file = await File.findOne({_id: req.query.id, user: req.user.id})
-      
+      const file = await File.findOne({ _id: req.query.id, user: req.user.id });
+
       if (!file) {
-        return res.status(400).json({message: 'Файл для удаления не был найден'})
+        return res.status(400).json({ message: 'Файл для удаления не был найден' });
       }
 
       fileService.deleteFileService(file);
 
       await file.remove();
 
-      return res.json({message: 'Файл был успешно удален'})
-    }
-    catch (err) {
-      return res.status(400).json({message: 'Directory is not empty'})
+      return res.json({ message: 'Файл был успешно удален' });
+    } catch (err) {
+      return res.status(400).json({ message: 'Directory is not empty' });
     }
   }
 }
