@@ -12,7 +12,7 @@ const registration_post = async (req, res) => {
     if (!errors.isEmpty) {
       return res.status(400).json({ message: 'Uncorrect Request', errors });
     }
-    console.log(req.body);
+    console.log(req.body, 'auth.controller');
     let { name, email, password } = req.body;
 
     const user = await User.findOne({ email });

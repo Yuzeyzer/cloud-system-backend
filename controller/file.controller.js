@@ -31,7 +31,7 @@ class FileController {
   async getFile(req, res) {
     try {
       const { sort } = req.query;
-      console.log(sort)
+      console.log(sort, 'sort')
       let files;
       switch (sort) {
         case 'name': {
@@ -159,6 +159,19 @@ class FileController {
       return res.json({ message: 'Файл был успешно удален' });
     } catch (err) {
       return res.status(400).json({ message: 'Directory is not empty' });
+    }
+  }
+  async searchFile(req,res) {
+    try {
+      const searchName = req.query.search;
+      console.log(searchName)
+      let files = await File.find({ user: req.user.id });
+      files = files.filter(file => file.name.includes(searchName));
+      return res.json(files);
+    }
+    catch (e){
+      console.log(e)
+      return res.status(400).json({ message: 'Search error'})
     }
   }
 }
